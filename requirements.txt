@@ -1,7 +1,9 @@
+numpy
 requests
 pillow
+torch
 transformers
 accelerate
-torch
-ultralytics
+huggingface_hub
+ultralytics>=8.3.0
 git+https://github.com/WildChlamydia/MiVOLO.git

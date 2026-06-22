@@ -7,10 +7,14 @@ license = "CC-BY-SA-4.0"
 
 dependencies = [
     "numpy",
+    "requests",
+    "pillow",
     "torch",
     "transformers",
-    "ultralytics",
-    "huggingface_hub"
+    "accelerate",
+    "huggingface_hub",
+    "ultralytics>=8.3.0",
+    "mivolo @ git+https://github.com/WildChlamydia/MiVOLO.git"
 ]
 
 [project.urls]

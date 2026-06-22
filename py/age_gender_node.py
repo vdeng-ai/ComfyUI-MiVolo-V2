@@ -16,8 +16,19 @@ os.makedirs(yolo_dir, exist_ok=True)
 def tensor_to_np_bgr(image_tensor):
     """
     Converts a ComfyUI RGB IMAGE tensor to a BGR NumPy array.
+
+    ComfyUI IMAGE tensors have shape [B, H, W, C]. Only the first image of a
+    batch is processed; if a larger batch is supplied a warning is printed so
+    the dropped frames are not silent. Using an explicit index (instead of
+    .squeeze()) avoids collapsing the batch dim when B>1 and avoids removing a
+    legitimate size-1 spatial/colour dimension.
     """
-    img_np_rgb = np.clip(255. * image_tensor.cpu().numpy().squeeze(), 0, 255).astype(np.uint8)
+    arr = image_tensor
+    if arr.ndim == 4:
+        if arr.shape[0] > 1:
+            print(f"MiVOLO: input batch of {arr.shape[0]} images received; only the first is processed.")
+        arr = arr[0]
+    img_np_rgb = np.clip(255. * arr.cpu().numpy(), 0, 255).astype(np.uint8)
     if img_np_rgb.ndim == 3 and img_np_rgb.shape[2] == 3:
         img_np_bgr = img_np_rgb[:, :, ::-1]
         return img_np_bgr
