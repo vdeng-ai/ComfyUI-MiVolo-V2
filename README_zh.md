@@ -22,6 +22,15 @@
 
 ## 🚀 如何安装
 
+## 兼容性与安全说明
+
+* 需要 Python 3.10 或更新版本，与当前 ComfyUI 的基础要求保持一致。
+* 依赖范围按当前 ComfyUI 代际和官方 MiVOLO V2 模型卡做了边界约束（`transformers>=4.51.0,<5`、`accelerate>=1.8.1,<2`、`numpy>=1.25.0,<3`、`ultralytics>=8.3.0,<9`）。如果 ComfyUI 升级到新的主版本依赖，建议先在测试环境验证本节点。
+* MiVOLO 模型加载时需要 `trust_remote_code=True`，因为 Hugging Face 模型仓库包含自定义模型代码。请只使用可信模型仓库；离线或生产环境建议使用已审查的本地模型副本。
+* `mivolo` 依赖来自上游 Git 仓库，本项目没有固定到可验证的 PyPI 包。需要完全可复现部署时，请在自己的环境中安装已审查的固定 commit。
+* ComfyUI 的批量 IMAGE 输入可以连接，但本节点只处理 batch 中的第一张图。
+* 多人结果中的 `age` 和 `gender` 是逗号分隔字符串，`prediction_text` 是可读文本。
+
 ### 1. (推荐) 使用 ComfyUI Manager
 1.  打开 ComfyUI Manager。
 2.  点击 "Install Custom Nodes"。
@@ -35,7 +44,7 @@
     ```
 2.  Clone 本仓库:
     ```bash
-    git clone [您的 GitHub 仓库 URL]
+    git clone https://github.com/deng-wei/ComfyUI-MiVolo-V2.git
     ```
 3.  安装依赖:
     ```bash
@@ -94,6 +103,8 @@ ComfyUI/
 
 完成后，"Load MiVOLO Model" 节点将自动在下拉列表中检测到它。
 
+加载器会在 `ComfyUI/models/mivolo/` 下查找包含 `config.json` 的完整 Hugging Face 模型目录，因此也支持使用其他本地 MiVOLO 模型快照。
+
 -----
 
 ### 2\. YOLO 检测模型 (`MiVOLODetectorLoader`)
@@ -132,6 +143,8 @@ ComfyUI/
 
 完成后，"Load MiVOLO Detector (YOLO)" 节点将能立即加载该模型。
 
+如果默认检测模型是自动下载的，后续运行会复用 `ComfyUI/models/yolo/yolov8x_person_face.pt`，不会因为默认远程名称而重复下载。
+
 ## 💡 使用技巧
 
 * 为了获得最佳效果，请确保输入的图像清晰且人脸/身体可见。
@@ -146,9 +159,9 @@ ComfyUI/
 * **原始论文:**
     * [MiVOLO: Multi-input Transformer for Age and Gender Estimation (2023)](https://arxiv.org/abs/2307.04616)
     * [Beyond Specialization: Assessing the Capabilities of MLLMs in Age and Gender Estimation (2024)](https://arxiv.org/abs/2403.02302)
-* **原始许可:** 原始项目使用了一份自定义的、基于 CC BY-SA 4.0 的许可协议。详情请见：[原始仓库的LICENSE文件](https://github.com/WildChlamydia/MiVOLO/tree/main/license)
+* **模型卡许可:** Hugging Face 模型卡标注为 `apache-2.0`。如果需要重新分发模型文件或衍生资源，也请同时核对上游 [MiVOLO 仓库](https://github.com/WildChlamydia/MiVOLO)。
 
-根据原始许可的“保留条件”，**本 ComfyUI 节点项目同样在 Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0) 许可下开源。**
+本 ComfyUI 节点项目按 `pyproject.toml` 中声明的 Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0) 许可发布。
 
 这意味着您可以在遵守署名和相同方式共享的前提下，自由地使用、修改和分发本项目。
 

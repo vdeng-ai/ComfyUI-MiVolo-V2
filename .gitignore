@@ -24,3 +24,8 @@ build/
 dist/
 *.egg-info/
 *.egg
+
+# Standalone tests (local-only smoke tests + generated artifacts)
+###################
+tests/
+.venv/

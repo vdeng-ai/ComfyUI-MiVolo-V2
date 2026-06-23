@@ -24,6 +24,15 @@ Example Workflow:
 
 ## 🚀 How to Install
 
+## Compatibility and Safety Notes
+
+* Requires Python 3.10 or newer, matching current ComfyUI baseline support.
+* Dependency ranges are intentionally bounded for the current ComfyUI generation and the official MiVOLO V2 model card (`transformers>=4.51.0,<5`, `accelerate>=1.8.1,<2`, `numpy>=1.25.0,<3`, `ultralytics>=8.3.0,<9`). If ComfyUI ships a newer major dependency version, test this node before upgrading a production environment.
+* The MiVOLO model is loaded with `trust_remote_code=True` because the Hugging Face model uses custom model code. Only use model repositories you trust, or use a locally reviewed copy for offline deployments.
+* The `mivolo` Git dependency is installed from the upstream repository because there is no pinned PyPI package in this project. For fully reproducible deployments, install from a reviewed commit in your own environment.
+* ComfyUI batch IMAGE inputs are accepted, but only the first image in the batch is processed.
+* Multi-person results return comma-separated `age` and `gender` strings, plus a human-readable `prediction_text`.
+
 ### 1. (Recommended) Use ComfyUI Manager
 1.  Open ComfyUI Manager.
 2.  Click "Install Custom Nodes".
@@ -87,6 +96,8 @@ ComfyUI/
 ```
 Once done, the "Load MiVOLO Model" node will automatically detect it in the dropdown list.
 
+The loader detects local MiVOLO folders by looking for `config.json` under `ComfyUI/models/mivolo/`, so custom local model folders are supported when they contain a complete Hugging Face model snapshot.
+
 ### 2. YOLO Detector Model (MiVOLODetectorLoader)
 
 This is a `.pt` file used to detect people and faces in an image.
@@ -118,6 +129,8 @@ ComfyUI/
 
 Once done, the "Load MiVOLO Detector (YOLO)" node will be able to load the model immediately.
 
+If the default detector was downloaded automatically, the loader will reuse `ComfyUI/models/yolo/yolov8x_person_face.pt` on later runs instead of downloading it again.
+
 ## 💡 Usage Tips
 
 * For best results, ensure the input image is clear and the face/body is visible.
@@ -132,9 +145,9 @@ This project is **Adapted Material** based on `iitolstykh/mivolo_v2`.
 * **Original Papers:**
     * [MiVOLO: Multi-input Transformer for Age and Gender Estimation (2023)](https://arxiv.org/abs/2307.04616)
     * [Beyond Specialization: Assessing the Capabilities of MLLMs in Age and Gender Estimation (2024)](https://arxiv.org/abs/2403.02302)
-* **Original License:** The original project uses a custom license based on CC BY-SA 4.0. See the original repository's [LICENSE](https://github.com/WildChlamydia/MiVOLO/tree/main/license) file for details.
+* **Model Card License:** The Hugging Face model card lists `apache-2.0`. Review the upstream [MiVOLO repository](https://github.com/WildChlamydia/MiVOLO) as well if you redistribute model files or derived assets.
 
-In accordance with the original license's "ShareAlike" condition, **this ComfyUI node project is also open-sourced under the Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0) license.**
+This ComfyUI node project is distributed under the Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0) license as declared in `pyproject.toml`.
 
 This means you are free to use, modify, and distribute this project, provided you give appropriate attribution and share your adaptations under the same license.
 

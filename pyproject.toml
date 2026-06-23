@@ -2,18 +2,19 @@
 name = "ComfyUI-MiVolo-V2"
 description = "ComfyUI nodes for MiVolo V2 Age & Gender Prediction (based on iitolstykh/mivolo_v2)"
 version = "1.0.0" 
+requires-python = ">=3.10"
 
 license = "CC-BY-SA-4.0" 
 
 dependencies = [
-    "numpy",
-    "requests",
-    "pillow",
-    "torch",
-    "transformers",
-    "accelerate",
-    "huggingface_hub",
-    "ultralytics>=8.3.0",
+    "numpy>=1.25.0,<3",
+    "requests>=2.31.0",
+    "pillow>=10.0.0",
+    "torch>=2.1.0",
+    "transformers>=4.51.0,<5",
+    "accelerate>=1.8.1,<2",
+    "huggingface_hub>=0.23.0,<1",
+    "ultralytics>=8.3.0,<9",
     "mivolo @ git+https://github.com/WildChlamydia/MiVOLO.git"
 ]
 
