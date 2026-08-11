@@ -14,6 +14,27 @@
 * **性别预测 (Gender Estimation):** 输出预测的性别（例如：Male/Female）的字符串。
 * **多人输入支持:** 自动处理面部和身体裁剪图，以提高准确性（基于原始模型能力）。
 
+## 📊 模型性能与候选评估
+
+> **支持范围：** 本项目当前仅支持 **MiVOLO v2**。FaceAge ClientScan 和 MiVOLO-Next 仅作为未来可能新增后端的调研候选；下表不代表这两个模型当前可在本 ComfyUI 节点中选择。
+
+### 已发布的 LAGENDA 指标
+
+下列数据均为已发布的 LAGENDA 基准指标。年龄 MAE 越低越好，CS@5 和性别准确率越高越好。由于各模型的实现与预处理流程不同，这些数字可用于初步选型，但不属于独立控制变量的对比实验。
+
+| 模型 | 输入 | 参数量 | 年龄 MAE ↓ | CS@5 ↑ | 性别准确率 ↑ | 证据来源 |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| [MiVOLO v2](https://huggingface.co/iitolstykh/mivolo_v2) | 人脸 + 身体 | 28.8M | 3.650 | 74.48% | 97.99% | [2024 官方论文](https://arxiv.org/abs/2403.02302) |
+| [FaceAge ClientScan](https://huggingface.co/TrungTran/faceage_ClientScan) | 仅人脸 | 307M | 3.555 | 75.5% | 97.75% | 作者在模型卡中自报，尚无独立复现 |
+
+### 权重可用性与集成状态
+
+| 模型 | 权重/许可状态 | 本项目状态 | 证据等级 |
+| --- | --- | --- | --- |
+| MiVOLO v2 | Hugging Face 权重公开；模型卡标注 Apache-2.0，同时应核对上游条款 | **当前已支持** | 官方论文与模型卡 |
+| FaceAge ClientScan | 接受 Hugging Face 访问条款后可下载的门控公开权重；模型卡标注 Apache-2.0，其 DINOv3 backbone 还受 [DINOv3 License](https://huggingface.co/facebook/dinov3-vitl16-pretrain-lvd1689m/blob/main/LICENSE.md) 约束 | 候选，尚未支持 | 作者自报模型卡 |
+| MiVOLO-Next | 权重未公开，仅有在线演示 | 调研候选，尚未支持 | 官方仓库声明与演示 |
+
 ## 🖼️ 节点和工作流示例
 
 ### 示例工作流

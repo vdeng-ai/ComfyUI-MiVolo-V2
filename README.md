@@ -16,6 +16,27 @@ This project is a ComfyUI wrapper node for the `iitolstykh/mivolo_v2` model. MiV
 * **Gender Estimation:** Outputs the predicted gender (e.g., Male/Female) as a string.
 * **Multi-Person Support:** Automatically processes face and body crops to improve accuracy (based on the original model's capabilities).
 
+## 📊 Model Performance and Candidate Evaluation
+
+> **Support scope:** This project currently supports **MiVOLO v2 only**. FaceAge ClientScan and MiVOLO-Next are listed as research candidates for possible future backends; the tables below do not mean that either model can currently be selected in this ComfyUI node.
+
+### Published LAGENDA Metrics
+
+The following figures were published for the LAGENDA benchmark. Lower age MAE is better; higher CS@5 and gender accuracy are better. They are useful for initial model selection, but are not an independently controlled comparison because the implementations and preprocessing pipelines differ.
+
+| Model | Input | Parameters | Age MAE ↓ | CS@5 ↑ | Gender Accuracy ↑ | Evidence |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| [MiVOLO v2](https://huggingface.co/iitolstykh/mivolo_v2) | Face + body | 28.8M | 3.650 | 74.48% | 97.99% | [Official 2024 paper](https://arxiv.org/abs/2403.02302) |
+| [FaceAge ClientScan](https://huggingface.co/TrungTran/faceage_ClientScan) | Face only | 307M | 3.555 | 75.5% | 97.75% | Author-reported model card; not independently reproduced |
+
+### Availability and Integration Readiness
+
+| Model | Weight / License Status | Project Status | Evidence Level |
+| --- | --- | --- | --- |
+| MiVOLO v2 | Public Hugging Face weights; model card lists Apache-2.0, with upstream terms also requiring review | **Currently supported** | Official papers and model card |
+| FaceAge ClientScan | Gated public download after accepting Hugging Face access terms; model card lists Apache-2.0, while the DINOv3 backbone is also subject to the [DINOv3 License](https://huggingface.co/facebook/dinov3-vitl16-pretrain-lvd1689m/blob/main/LICENSE.md) | Candidate; not supported | Author-reported model card |
+| MiVOLO-Next | Weights not public; online demo only | Research candidate; not supported | Official repository claim and demo |
+
 ## 🖼️ Nodes and Workflow Examples
 
 Example Workflow:
