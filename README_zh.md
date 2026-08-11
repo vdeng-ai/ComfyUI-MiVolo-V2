@@ -65,7 +65,7 @@
     ```
 2.  Clone 本仓库:
     ```bash
-    git clone https://github.com/deng-wei/ComfyUI-MiVolo-V2.git
+    git clone https://github.com/vdeng-ai/ComfyUI-MiVolo-V2.git
     ```
 3.  安装依赖:
     ```bash

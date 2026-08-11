@@ -67,7 +67,7 @@ Example Workflow:
     ```
 2.  Clone this repository:
     ```bash
-    git clone https://github.com/deng-wei/ComfyUI-MiVolo-V2.git
+    git clone https://github.com/vdeng-ai/ComfyUI-MiVolo-V2.git
     ```
 3.  Install the dependencies:
     ```bash
