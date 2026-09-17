@@ -1,10 +1,10 @@
 [project]
 name = "ComfyUI-MiVolo-V2"
 description = "ComfyUI nodes for MiVolo V2 Age & Gender Prediction (based on iitolstykh/mivolo_v2)"
-version = "1.0.0" 
+version = "1.0.0"
 requires-python = ">=3.10"
 
-license = "CC-BY-SA-4.0" 
+license = "CC-BY-SA-4.0"
 
 dependencies = [
     "numpy>=1.25.0,<3",
@@ -19,10 +19,10 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/deng-wei/ComfyUI-MiVolo-V2"
-#  Used by Comfy Registry https://comfyregistry.org
+Repository = "https://github.com/vdeng-ai/ComfyUI-MiVolo-V2"
+# Used by Comfy Registry https://comfyregistry.org
 
 [tool.comfy]
-PublisherId = "deng-wei"
+PublisherId = "vdeng-ai"
 DisplayName = "ComfyUI-MiVolo-V2"
 Icon = ""

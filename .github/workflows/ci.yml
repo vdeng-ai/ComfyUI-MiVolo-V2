@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  python-compatibility:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Syntax check
+        run: python -m compileall -q __init__.py py
+
+      - name: Import smoke test
+        shell: bash
+        run: |
+          python - <<'PY'
+          import importlib.util
+          import pathlib
+          import sys
+          import tempfile
+          import types
+
+          def install_stub(name, **attributes):
+              module = types.ModuleType(name)
+              for key, value in attributes.items():
+                  setattr(module, key, value)
+              sys.modules[name] = module
+              return module
+
+          class DummyDependency:
+              pass
+
+          install_stub("numpy")
+          install_stub("torch")
+          install_stub(
+              "transformers",
+              AutoModelForImageClassification=DummyDependency,
+              AutoConfig=DummyDependency,
+              AutoImageProcessor=DummyDependency,
+          )
+          install_stub("ultralytics", YOLO=DummyDependency)
+
+          with tempfile.TemporaryDirectory() as temp_dir:
+              install_stub("folder_paths", models_dir=temp_dir)
+
+              comfy = install_stub("comfy")
+              comfy.__path__ = []
+              model_management = install_stub("comfy.model_management")
+              comfy.model_management = model_management
+
+              root = pathlib.Path.cwd()
+              spec = importlib.util.spec_from_file_location(
+                  "comfyui_mivolo_v2",
+                  root / "__init__.py",
+                  submodule_search_locations=[str(root)],
+              )
+              module = importlib.util.module_from_spec(spec)
+              sys.modules[spec.name] = module
+              spec.loader.exec_module(module)
+
+              expected_nodes = {
+                  "MiVOLOLoader",
+                  "MiVOLODetectorLoader",
+                  "MiVOLOAgeGenderPredictorWithDetector",
+                  "MiVOLOAgeGenderPredictorFromCrops",
+              }
+              assert set(module.NODE_CLASS_MAPPINGS) == expected_nodes
+              assert set(module.NODE_DISPLAY_NAME_MAPPINGS) == expected_nodes
+          PY
